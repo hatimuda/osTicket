@@ -91,7 +91,7 @@ body, input {
 }
 
 #loginBox {
-    box-shadow:0 0 50px 5px rgba(0,0,0,0.3), 0 0 5px -1px white;
+    /* box-shadow:0 0 50px 5px rgba(0,0,0,1), 0 0 5px -1px white; */
     mix-blend-mode: normal;
     isolation: isolate;
     width:400px;
@@ -115,11 +115,11 @@ body, input {
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: rgba(255,255,255,0.6);
+    background-color: rgba(255,255,255,1);
     border-radius: 5px;
     z-index: -1;
     mix-blend-mode: normal;
-    border: 1px solid rgba(0,0,0,0.3);
+    /* border: 1px solid rgba(0,0,0,0.3); */
 }
 /* IE 9-10 */
 @media screen\0 {
