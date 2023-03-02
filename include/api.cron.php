@@ -3,43 +3,38 @@
 include_once INCLUDE_DIR.'class.cron.php';
 
 class CronApiController extends ApiController {
+
     function execute() {
 
-        if (!($key=$this->requireApiKey()) || !$key->canExecuteCron())
+        if(!($key=$this->requireApiKey()) || !$key->canExecuteCron())
             return $this->exerr(401, __('API key not authorized'));
 
         $this->run();
     }
 
-    protected function run() {
+    /* private */
+    function run() {
+        global $ost;
+
         Cron::run();
-        // TODO: Add elapsed time to the debug log
-        $this->debug(__('Cron Job'),
-                sprintf('%s [%s]', __('Cron job executed'), $this->getRemoteAddr()));
+       
+        $ost->logDebug(__('Cron Job'),__('Cron job executed').' ['.$_SERVER['REMOTE_ADDR'].']');
         $this->response(200,'Completed');
     }
 }
 
 class LocalCronApiController extends CronApiController {
 
-    public function isCli() {
-        return true;
-    }
+    function response($code, $resp) {
 
-    protected function getRemoteAddr() {
-        // Local Cron doesn't have IP Addr set
-        return 'CLI';
-    }
-
-    protected function response($code, $response) {
-
-        if ($code == 200) //Success - exit silently.
+        if($code == 200) //Success - exit silently.
             exit(0);
-
-        echo $response;
+        
+        //On error echo the response (error)
+        echo $resp;
         exit(1);
     }
-
+        
     static function call() {
         $cron = new LocalCronApiController();
         $cron->run();
